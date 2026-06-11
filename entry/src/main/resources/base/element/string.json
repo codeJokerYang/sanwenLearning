@@ -405,6 +405,10 @@
       "value": "AI服务暂时不可用，请稍后重试"
     },
     {
+      "name": "err_api_key_missing",
+      "value": "尚未配置 API Key，请前往「设置」页填写"
+    },
+    {
       "name": "err_no_valid_material",
       "value": "无有效学习资料，请上传 Markdown 文件"
     },

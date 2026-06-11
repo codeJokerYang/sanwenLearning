@@ -19,6 +19,7 @@ export enum ErrorCode {
   NETWORK_DISCONNECTED = 'ERR_NETWORK_DISCONNECTED',
   AI_TIMEOUT = 'ERR_AI_TIMEOUT',
   AI_FAILED = 'ERR_AI_FAILED',
+  API_KEY_MISSING = 'ERR_API_KEY_MISSING',
   NO_VALID_MATERIAL = 'ERR_NO_VALID_MATERIAL',
 }
 
@@ -39,6 +40,7 @@ const ERROR_RESOURCE_MAP: Record<string, string> = {
   [ErrorCode.NETWORK_DISCONNECTED]: 'app.string.err_network_disconnected',
   [ErrorCode.AI_TIMEOUT]: 'app.string.err_ai_timeout',
   [ErrorCode.AI_FAILED]: 'app.string.err_ai_failed',
+  [ErrorCode.API_KEY_MISSING]: 'app.string.err_api_key_missing',
   [ErrorCode.NO_VALID_MATERIAL]: 'app.string.err_no_valid_material',
 }
 

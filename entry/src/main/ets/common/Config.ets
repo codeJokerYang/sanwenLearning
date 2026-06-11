@@ -70,10 +70,14 @@ export const AI_ENDPOINT_CONFIG: AiEndpointConfig = {
   CHAT_MODEL: 'deepseek-v4-flash',
   /** API Key 存储别名（用于 HUKS 加密存取） */
   API_KEY_ALIAS: 'default',
-  /** 默认 API Key（首次启动自动加密存储至 HUKS，后续从加密存储读取） */
-  DEFAULT_API_KEY: 'sk-daacc6d58aab43f4b97abc82f59278d7',
+  /**
+   * 默认 API Key — 出于安全考虑保持空字符串，严禁在此硬编码真实密钥并提交到版本库。
+   * 密钥由用户在「设置」页手动填写，经 HUKS AES-256 加密存储；
+   * 未配置时首页会弹窗引导用户前往设置页。
+   */
+  DEFAULT_API_KEY: '',
   /** API 配置最后更新时间 */
-  LAST_UPDATED: '2026-06-09T00:00:00+08:00',
+  LAST_UPDATED: '2026-06-12T00:00:00+08:00',
 }
 
 /** AI 服务相关配置 */

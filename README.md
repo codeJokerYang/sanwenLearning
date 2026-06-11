@@ -40,8 +40,23 @@ entry/src/main/ets/
 
 1. 安装 [DevEco Studio](https://developer.huawei.com/consumer/cn/deveco-studio/)（HarmonyOS NEXT / API 12+）
 2. 用 DevEco Studio 打开本项目根目录，等待 ohpm 依赖同步完成
-3. 在「设置」页面配置 AI 服务的 API Key 后即可体验完整功能
+3. 在「设置」页面配置 AI 服务的 API Key 后即可体验完整功能（见下方「API Key 配置」）
 4. 连接模拟器或真机，点击 Run 运行 `entry` 模块
+
+## API Key 配置
+
+应用**不内置任何 API Key**（`entry/src/main/ets/common/Config.ets` 中 `DEFAULT_API_KEY` 恒为空字符串），AI 功能（知识图谱、争议分析、测评、对话）需要用户自行配置：
+
+1. 前往 [DeepSeek 开放平台](https://platform.deepseek.com/) 注册并创建 API Key
+2. 启动应用，首页检测到未配置密钥时会弹窗引导；也可随时通过「我的 → 设置」或学习页右上角设置入口进入设置页
+3. 在设置页「配置 API Key」输入框中粘贴密钥并保存
+
+密钥安全说明：
+
+- 密钥经 **HUKS AES-256-CBC 加密**后存储于应用沙箱（`ApiKeyStore.ets`），明文仅在发起请求时短暂解密
+- 日志与请求记录中的密钥自动脱敏（前 3 后 4，中间 `***`）
+- **严禁**将真实密钥硬编码进 `Config.ets` 或任何源码文件并提交到版本库；`DEFAULT_API_KEY` 仅作本地调试便利保留，提交前必须清空
+- 若密钥曾被提交，须立即到服务商控制台作废并更换，git 历史中的密钥应视为已泄露
 
 ## 文档
 
