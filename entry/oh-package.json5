@@ -1,7 +1,7 @@
 {
   "name": "entry",
   "version": "1.0.0",
-  "description": "Please describe the basic information.",
+  "description": "三问高效学习机主模块：页面、组件、视图模型、服务与本地数据库",
   "main": "",
   "author": "",
   "license": "",
