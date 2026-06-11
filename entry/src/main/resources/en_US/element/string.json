@@ -1,0 +1,860 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "Three-Ask Learning"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "Three-Ask Learning — What · Why · How"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "3Q Learning"
+    },
+    {
+      "name": "manual_input_placeholder",
+      "value": "Type your answer..."
+    },
+    {
+      "name": "manual_input_accessibility",
+      "value": "Manual input area"
+    },
+    {
+      "name": "manual_input_desc",
+      "value": "Manual input area, typing only"
+    },
+    {
+      "name": "radar_chart_accessibility",
+      "value": "Ability radar chart, showing 6 Bloom's taxonomy scores"
+    },
+    {
+      "name": "puzzle_fragment_accessibility",
+      "value": "Knowledge node: %s, activated"
+    },
+    {
+      "name": "puzzle_fragment_accessibility_tap",
+      "value": "Knowledge node: %s, tap to activate"
+    },
+    {
+      "name": "puzzle_lit_accessibility",
+      "value": "Knowledge node: %s, activated"
+    },
+    {
+      "name": "mind_badge_title",
+      "value": "Mind Shaping"
+    },
+    {
+      "name": "mind_badge_subtitle",
+      "value": "Congratulations on completing the three-ask learning"
+    },
+    {
+      "name": "mind_badge_accessibility",
+      "value": "Mind shaping badge"
+    },
+    {
+      "name": "three_ask_q1_label",
+      "value": "What"
+    },
+    {
+      "name": "three_ask_q2_label",
+      "value": "Why"
+    },
+    {
+      "name": "three_ask_q3_label",
+      "value": "How"
+    },
+    {
+      "name": "three_ask_accessibility",
+      "value": "Three-ask learning progress indicator"
+    },
+    {
+      "name": "three_ask_q1",
+      "value": "What"
+    },
+    {
+      "name": "three_ask_q2",
+      "value": "Why"
+    },
+    {
+      "name": "three_ask_q3",
+      "value": "How"
+    },
+    {
+      "name": "step_completed",
+      "value": "Completed"
+    },
+    {
+      "name": "step_current",
+      "value": "Current step"
+    },
+    {
+      "name": "step_pending",
+      "value": "Pending"
+    },
+    {
+      "name": "delete_course",
+      "value": "Delete Course"
+    },
+    {
+      "name": "progress_prefix",
+      "value": "Progress: "
+    },
+    {
+      "name": "course_card_accessibility",
+      "value": "Course card, long press to delete"
+    },
+    {
+      "name": "status_draft",
+      "value": "Draft"
+    },
+    {
+      "name": "status_generating",
+      "value": "Generating"
+    },
+    {
+      "name": "status_q1",
+      "value": "What"
+    },
+    {
+      "name": "status_q2",
+      "value": "Why"
+    },
+    {
+      "name": "status_q3",
+      "value": "How"
+    },
+    {
+      "name": "status_completed",
+      "value": "Completed"
+    },
+    {
+      "name": "debate_view_a",
+      "value": "View A"
+    },
+    {
+      "name": "debate_view_b",
+      "value": "View B"
+    },
+    {
+      "name": "debate_insight_placeholder",
+      "value": "Type your insight..."
+    },
+    {
+      "name": "debate_submit",
+      "value": "Submit View"
+    },
+    {
+      "name": "debate_evidence_prefix",
+      "value": "Evidence: "
+    },
+    {
+      "name": "ai_message_prefix",
+      "value": "AI Review: "
+    },
+    {
+      "name": "ai_message_description",
+      "value": "AI review message bubble"
+    },
+    {
+      "name": "home_search_placeholder",
+      "value": "Search courses..."
+    },
+    {
+      "name": "home_my_courses",
+      "value": "My Courses"
+    },
+    {
+      "name": "home_no_courses",
+      "value": "No courses yet, tap the button to create one"
+    },
+    {
+      "name": "home_loading_courses",
+      "value": "Loading..."
+    },
+    {
+      "name": "home_create_course",
+      "value": "Create Course"
+    },
+    {
+      "name": "home_delete_confirm_title",
+      "value": "Confirm Delete"
+    },
+    {
+      "name": "home_delete_confirm_message",
+      "value": "Are you sure you want to delete this course? All associated learning records, knowledge graph, and assessment data will be deleted. This action cannot be undone."
+    },
+    {
+      "name": "home_delete_confirm_cancel",
+      "value": "Cancel"
+    },
+    {
+      "name": "home_delete_confirm_ok",
+      "value": "Delete"
+    },
+    {
+      "name": "home_new_course_title",
+      "value": "New Course"
+    },
+    {
+      "name": "home_new_course_placeholder",
+      "value": "Enter course title..."
+    },
+    {
+      "name": "home_new_course_create",
+      "value": "Create"
+    },
+    {
+      "name": "home_new_course_cancel",
+      "value": "Cancel"
+    },
+    {
+      "name": "knowledge_graph_no_nodes",
+      "value": "No knowledge nodes yet, please upload learning materials first"
+    },
+    {
+      "name": "knowledge_graph_degraded",
+      "value": "Too many nodes, switched to list view"
+    },
+    {
+      "name": "knowledge_graph_node_prefix",
+      "value": "Knowledge node: "
+    },
+    {
+      "name": "learning_space_title",
+      "value": "Why — Controversy Analysis"
+    },
+    {
+      "name": "learning_space_no_controversies",
+      "value": "No controversies yet, waiting for AI generation"
+    },
+    {
+      "name": "learning_space_skip_evaluation",
+      "value": "Skip Review"
+    },
+    {
+      "name": "assessment_title",
+      "value": "How — Ability Assessment"
+    },
+    {
+      "name": "assessment_no_questions",
+      "value": "No questions yet"
+    },
+    {
+      "name": "assessment_bloom_failed",
+      "value": "AI generated questions are insufficient, please retry"
+    },
+    {
+      "name": "assessment_retry",
+      "value": "Regenerate"
+    },
+    {
+      "name": "assessment_complete",
+      "value": "Answered"
+    },
+    {
+      "name": "assessment_objective_label",
+      "value": "Select an option:"
+    },
+    {
+      "name": "assessment_subjective_label",
+      "value": "Type your answer:"
+    },
+    {
+      "name": "assessment_bloom_remember",
+      "value": "Remember"
+    },
+    {
+      "name": "assessment_bloom_understand",
+      "value": "Understand"
+    },
+    {
+      "name": "assessment_bloom_apply",
+      "value": "Apply"
+    },
+    {
+      "name": "assessment_bloom_analyze",
+      "value": "Analyze"
+    },
+    {
+      "name": "assessment_bloom_evaluate",
+      "value": "Evaluate"
+    },
+    {
+      "name": "assessment_bloom_create",
+      "value": "Create"
+    },
+    {
+      "name": "assessment_result_title",
+      "value": "Learning Report"
+    },
+    {
+      "name": "assessment_result_loading",
+      "value": "Generating report..."
+    },
+    {
+      "name": "assessment_result_no_report",
+      "value": "No report data yet"
+    },
+    {
+      "name": "assessment_result_bloom_title",
+      "value": "Bloom's Ability Radar Chart"
+    },
+    {
+      "name": "assessment_result_score_breakdown",
+      "value": "Three-Ask Score Breakdown"
+    },
+    {
+      "name": "assessment_result_q1_score",
+      "value": "First Ask · What"
+    },
+    {
+      "name": "assessment_result_q2_score",
+      "value": "Second Ask · Why"
+    },
+    {
+      "name": "assessment_result_q3_score",
+      "value": "Third Ask · How"
+    },
+    {
+      "name": "assessment_result_total",
+      "value": "Total Score"
+    },
+    {
+      "name": "assessment_result_weak_nodes",
+      "value": "Weak Knowledge Points"
+    },
+    {
+      "name": "assessment_result_integrity",
+      "value": "All answers in this report were manually entered by the student"
+    },
+    {
+      "name": "assessment_result_suspect_warning",
+      "value": "⚠ Some answers were entered too quickly, possibly not manually typed"
+    },
+    {
+      "name": "assessment_result_export",
+      "value": "Export Report"
+    },
+    {
+      "name": "err_unknown",
+      "value": "Operation failed, please retry"
+    },
+    {
+      "name": "err_course_title_empty",
+      "value": "Course title cannot be empty"
+    },
+    {
+      "name": "err_course_not_found",
+      "value": "Course not found"
+    },
+    {
+      "name": "err_course_load_failed",
+      "value": "Failed to load courses"
+    },
+    {
+      "name": "err_course_delete_failed",
+      "value": "Failed to delete course"
+    },
+    {
+      "name": "err_course_create_failed",
+      "value": "Failed to create course"
+    },
+    {
+      "name": "err_knowledge_load_failed",
+      "value": "Failed to load knowledge graph"
+    },
+    {
+      "name": "err_node_activate_failed",
+      "value": "Failed to activate node"
+    },
+    {
+      "name": "err_learning_load_failed",
+      "value": "Failed to load learning space"
+    },
+    {
+      "name": "err_insight_submit_failed",
+      "value": "Failed to submit insight"
+    },
+    {
+      "name": "err_assessment_load_failed",
+      "value": "Failed to load assessment questions"
+    },
+    {
+      "name": "err_quiz_not_found",
+      "value": "Question not found"
+    },
+    {
+      "name": "err_report_no_data",
+      "value": "Cannot generate report: no answer data"
+    },
+    {
+      "name": "err_report_no_export",
+      "value": "No report available to export"
+    },
+    {
+      "name": "err_network_disconnected",
+      "value": "No network connection, please check network settings"
+    },
+    {
+      "name": "err_ai_timeout",
+      "value": "AI service timeout, please check network and retry"
+    },
+    {
+      "name": "err_ai_failed",
+      "value": "AI service temporarily unavailable, please try again later"
+    },
+    {
+      "name": "err_no_valid_material",
+      "value": "No valid learning materials, please upload a Markdown file"
+    },
+    {
+      "name": "bloom_remember",
+      "value": "Remember"
+    },
+    {
+      "name": "bloom_understand",
+      "value": "Understand"
+    },
+    {
+      "name": "bloom_apply",
+      "value": "Apply"
+    },
+    {
+      "name": "bloom_analyze",
+      "value": "Analyze"
+    },
+    {
+      "name": "bloom_evaluate",
+      "value": "Evaluate"
+    },
+    {
+      "name": "bloom_create",
+      "value": "Create"
+    },
+    {
+      "name": "a11y_search_input",
+      "value": "Search box, enter a topic you want to learn"
+    },
+    {
+      "name": "a11y_delete_dialog",
+      "value": "Confirm delete course"
+    },
+    {
+      "name": "a11y_create_dialog",
+      "value": "Create new course"
+    },
+    {
+      "name": "a11y_course_title_input",
+      "value": "Course title input"
+    },
+    {
+      "name": "a11y_debate_submit",
+      "value": "Submit insight"
+    },
+    {
+      "name": "a11y_debate_input",
+      "value": "Insight input, type your insight manually"
+    },
+    {
+      "name": "a11y_manual_input_desc",
+      "value": "Type your answer manually, pasting is disabled"
+    },
+    {
+      "name": "a11y_canvas_status",
+      "value": "Knowledge graph, %d nodes total, %d activated"
+    },
+    {
+      "name": "home_empty_message",
+      "value": "No courses yet, enter a question to start learning"
+    },
+    {
+      "name": "home_empty_action",
+      "value": "Create"
+    },
+    {
+      "name": "knowledge_degraded_many",
+      "value": "Many nodes, optimized rendering mode"
+    },
+    {
+      "name": "knowledge_degraded_list",
+      "value": "Too many nodes, switched to list view"
+    },
+    {
+      "name": "profile_title",
+      "value": "Profile"
+    },
+    {
+      "name": "profile_default_name",
+      "value": "3Q Learner"
+    },
+    {
+      "name": "profile_default_bio",
+      "value": "Deep understanding through three questions"
+    },
+    {
+      "name": "profile_stats_courses",
+      "value": "Courses"
+    },
+    {
+      "name": "profile_stats_completed",
+      "value": "Completed"
+    },
+    {
+      "name": "profile_stats_days",
+      "value": "Study Days"
+    },
+    {
+      "name": "profile_stats_avg_score",
+      "value": "Avg Score"
+    },
+    {
+      "name": "profile_badge_title",
+      "value": "Achievements"
+    },
+    {
+      "name": "profile_badge_beginner",
+      "value": "Beginner"
+    },
+    {
+      "name": "profile_badge_beginner_desc",
+      "value": "Create your first course"
+    },
+    {
+      "name": "profile_badge_master",
+      "value": "3Q Master"
+    },
+    {
+      "name": "profile_badge_master_desc",
+      "value": "Complete all three asks"
+    },
+    {
+      "name": "profile_badge_pioneer",
+      "value": "Pioneer"
+    },
+    {
+      "name": "profile_badge_pioneer_desc",
+      "value": "Study for 7 days"
+    },
+    {
+      "name": "profile_setting_title",
+      "value": "Settings"
+    },
+    {
+      "name": "profile_setting_theme",
+      "value": "Theme"
+    },
+    {
+      "name": "profile_setting_theme_value",
+      "value": "Cosmic Blue"
+    },
+    {
+      "name": "profile_setting_api",
+      "value": "API Config"
+    },
+    {
+      "name": "profile_setting_api_configured",
+      "value": "Configured"
+    },
+    {
+      "name": "profile_setting_api_not_configured",
+      "value": "Not Configured"
+    },
+    {
+      "name": "profile_setting_about",
+      "value": "About 3Q Learning"
+    },
+    {
+      "name": "profile_setting_version",
+      "value": "v1.0.0"
+    },
+    {
+      "name": "profile_toast_developing",
+      "value": "Feature coming soon"
+    },
+    {
+      "name": "profile_about_title",
+      "value": "About 3Q Learning"
+    },
+    {
+      "name": "profile_about_content",
+      "value": "Three-Ask Learning v1.0.0\nBased on Socratic method & Bloom's taxonomy\n© 2026 3Q Learning Team"
+    },
+    {
+      "name": "tab_home",
+      "value": "Home"
+    },
+    {
+      "name": "tab_learning",
+      "value": "Learn"
+    },
+    {
+      "name": "tab_assessment",
+      "value": "Assess"
+    },
+    {
+      "name": "tab_profile",
+      "value": "Me"
+    },
+    {
+      "name": "a11y_profile_avatar",
+      "value": "User avatar, tap to edit profile"
+    },
+    {
+      "name": "a11y_stats_course",
+      "value": "Course count statistics"
+    },
+    {
+      "name": "a11y_stats_completed",
+      "value": "Completed courses statistics"
+    },
+    {
+      "name": "a11y_stats_days",
+      "value": "Study days statistics"
+    },
+    {
+      "name": "a11y_stats_score",
+      "value": "Average score statistics"
+    },
+    {
+      "name": "a11y_setting_theme",
+      "value": "Theme settings"
+    },
+    {
+      "name": "a11y_setting_api",
+      "value": "API configuration settings"
+    },
+    {
+      "name": "a11y_setting_about",
+      "value": "About 3Q Learning"
+    },
+    {
+      "name": "a11y_tab_home",
+      "value": "Home tab"
+    },
+    {
+      "name": "a11y_tab_learning",
+      "value": "Learn tab"
+    },
+    {
+      "name": "a11y_tab_assessment",
+      "value": "Assess tab"
+    },
+    {
+      "name": "a11y_tab_profile",
+      "value": "Profile tab"
+    },
+    {
+      "name": "home_greeting_morning",
+      "value": "Good Morning"
+    },
+    {
+      "name": "home_greeting_noon",
+      "value": "Good Afternoon"
+    },
+    {
+      "name": "home_greeting_afternoon",
+      "value": "Good Afternoon"
+    },
+    {
+      "name": "home_greeting_evening",
+      "value": "Good Evening"
+    },
+    {
+      "name": "home_greeting_night",
+      "value": "Late night, rest well"
+    },
+    {
+      "name": "home_greeting_late_night",
+      "value": "Late night, rest well"
+    },
+    {
+      "name": "home_today_progress",
+      "value": "Today's Progress"
+    },
+    {
+      "name": "home_no_active_course",
+      "value": "No active course"
+    },
+    {
+      "name": "home_continue_learning",
+      "value": "Continue Learning"
+    },
+    {
+      "name": "home_start_explore",
+      "value": "Start Exploring"
+    },
+    {
+      "name": "home_create_first_course",
+      "value": "Create your first course"
+    },
+    {
+      "name": "home_step_q1",
+      "value": "What"
+    },
+    {
+      "name": "home_step_q2",
+      "value": "Why"
+    },
+    {
+      "name": "home_step_q3",
+      "value": "How"
+    },
+    {
+      "name": "home_daily_question",
+      "value": "Daily Question"
+    },
+    {
+      "name": "home_daily_question_default",
+      "value": "If knowledge were a tree, what would its roots be?"
+    },
+    {
+      "name": "home_daily_question_source",
+      "value": "AI Recommended"
+    },
+    {
+      "name": "home_daily_question_easy",
+      "value": "Easy"
+    },
+    {
+      "name": "home_daily_question_medium",
+      "value": "Medium"
+    },
+    {
+      "name": "home_daily_question_hard",
+      "value": "Hard"
+    },
+    {
+      "name": "home_start_thinking",
+      "value": "Start Thinking"
+    },
+    {
+      "name": "home_change_question",
+      "value": "Next Question"
+    },
+    {
+      "name": "home_quick_new_course",
+      "value": "New Course"
+    },
+    {
+      "name": "home_quick_upload",
+      "value": "Upload"
+    },
+    {
+      "name": "home_quick_assess",
+      "value": "Assess"
+    },
+    {
+      "name": "home_quick_report",
+      "value": "Report"
+    },
+    {
+      "name": "home_stats_minutes",
+      "value": "min"
+    },
+    {
+      "name": "home_stats_knowledge",
+      "value": "concepts"
+    },
+    {
+      "name": "home_stats_streak",
+      "value": "day streak"
+    },
+    {
+      "name": "home_stats_study_time",
+      "value": "This Week"
+    },
+    {
+      "name": "home_stats_knowledge_count",
+      "value": "Knowledge"
+    },
+    {
+      "name": "home_stats_streak_days",
+      "value": "Streak"
+    },
+    {
+      "name": "home_stats_empty_hint",
+      "value": "Start learning to see your stats here"
+    },
+    {
+      "name": "home_discover_title",
+      "value": "Discover"
+    },
+    {
+      "name": "home_template_use",
+      "value": "Use Template"
+    },
+    {
+      "name": "home_template_quantum",
+      "value": "Quantum Mechanics Basics"
+    },
+    {
+      "name": "home_template_quantum_desc",
+      "value": "From wave-particle duality to entanglement"
+    },
+    {
+      "name": "home_template_history",
+      "value": "Chinese Ancient History"
+    },
+    {
+      "name": "home_template_history_desc",
+      "value": "From pre-Qin to Ming-Qing civilization"
+    },
+    {
+      "name": "home_template_python",
+      "value": "Python Programming"
+    },
+    {
+      "name": "home_template_python_desc",
+      "value": "From variables to OOP"
+    },
+    {
+      "name": "home_path_title",
+      "value": "AI Learning Path"
+    },
+    {
+      "name": "home_path_desc",
+      "value": "Personalized path from zero to mastery"
+    },
+    {
+      "name": "home_path_start",
+      "value": "Start Path"
+    },
+    {
+      "name": "home_path_duration",
+      "value": "Est. Duration"
+    },
+    {
+      "name": "home_path_knowledge",
+      "value": "Concepts Covered"
+    },
+    {
+      "name": "a11y_home_greeting",
+      "value": "Home greeting area"
+    },
+    {
+      "name": "a11y_home_continue_learning",
+      "value": "Continue learning button"
+    },
+    {
+      "name": "a11y_home_daily_question",
+      "value": "Daily question card"
+    },
+    {
+      "name": "a11y_home_quick_new_course",
+      "value": "New course quick action"
+    },
+    {
+      "name": "home_quick_upload_a11y",
+      "value": "Upload quick action"
+    },
+    {
+      "name": "a11y_home_quick_assess",
+      "value": "Assess quick action"
+    },
+    {
+      "name": "a11y_home_quick_report",
+      "value": "Report quick action"
+    }
+  ]
+}

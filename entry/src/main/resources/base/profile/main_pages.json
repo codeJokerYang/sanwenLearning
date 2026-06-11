@@ -1,0 +1,12 @@
+{
+  "src": [
+    "pages/HomePage",
+    "pages/LearningHome",
+    "pages/KnowledgeGraph",
+    "pages/LearningSpace",
+    "pages/Assessment",
+    "pages/AssessmentResult",
+    "pages/SettingsPage",
+    "pages/ProfilePage"
+  ]
+}

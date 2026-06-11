@@ -1,0 +1,108 @@
+{
+  "color": [
+    {
+      "name": "blue_500",
+      "value": "#007AFF"
+    },
+    {
+      "name": "green_500",
+      "value": "#34C759"
+    },
+    {
+      "name": "orange_500",
+      "value": "#FF9500"
+    },
+    {
+      "name": "red_500",
+      "value": "#FF3B30"
+    },
+    {
+      "name": "purple_500",
+      "value": "#7C4DFF"
+    },
+    {
+      "name": "deep_purple_500",
+      "value": "#5856D6"
+    },
+    {
+      "name": "deep_purple_700",
+      "value": "#673AB7"
+    },
+    {
+      "name": "green_400",
+      "value": "#4CAF50"
+    },
+    {
+      "name": "color_primary",
+      "value": "#007AFF"
+    },
+    {
+      "name": "color_success",
+      "value": "#34C759"
+    },
+    {
+      "name": "color_warning",
+      "value": "#FF9500"
+    },
+    {
+      "name": "color_danger",
+      "value": "#FF3B30"
+    },
+    {
+      "name": "color_purple",
+      "value": "#7C4DFF"
+    },
+    {
+      "name": "color_text_primary",
+      "value": "#1A1A1A"
+    },
+    {
+      "name": "color_text_secondary",
+      "value": "#333333"
+    },
+    {
+      "name": "color_text_tertiary",
+      "value": "#555555"
+    },
+    {
+      "name": "color_text_disabled",
+      "value": "#999999"
+    },
+    {
+      "name": "color_bg_page",
+      "value": "#F5F5F5"
+    },
+    {
+      "name": "color_bg_card",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "color_bg_input",
+      "value": "#F5F5F5"
+    },
+    {
+      "name": "color_bg_search",
+      "value": "#F0F0F0"
+    },
+    {
+      "name": "color_bg_bubble",
+      "value": "#F0F0F0"
+    },
+    {
+      "name": "color_divider",
+      "value": "#E5E5E5"
+    },
+    {
+      "name": "color_selected_bg",
+      "value": "#EBF5FF"
+    },
+    {
+      "name": "color_fragment_selected",
+      "value": "#4CAF50"
+    },
+    {
+      "name": "start_window_background",
+      "value": "#FFFFFF"
+    }
+  ]
+}

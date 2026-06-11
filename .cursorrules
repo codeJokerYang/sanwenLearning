@@ -1,0 +1,93 @@
+# ============================================================
+# 三问高效学习机 — 全局 AI 编程宪法
+# 平台：HarmonyOS NEXT (API 12+) | Stage 模型
+# ============================================================
+
+# -------------------- 平台与语言 --------------------
+- 平台：HarmonyOS NEXT，目标 API 版本 12+，使用 Stage 应用模型
+- 语言：ArkTS（TypeScript 严格超集），必须开启严格类型检查
+- 严禁使用 any / Object 类型，所有变量、参数、返回值必须有明确类型注解
+- 严禁使用 as any 强制转换，类型断言必须使用 as 具体类型
+- 严禁使用 // @ts-ignore 或 // @ts-nocheck 抑制类型错误
+
+# -------------------- UI 范式 --------------------
+- UI 框架：纯 ArkUI 声明式范式，严禁命令式 UI 操作
+- 组件定义：使用 @Component 装饰器，组件名使用 PascalCase
+- 状态管理：使用 @State / @Prop / @Link / @Provide / @Consume / @Watch
+- 构建函数：使用 @Builder 装饰器，Builder 函数名使用 PascalCase
+- 严禁在 @Builder 函数中使用 if-else 条件渲染替代条件表达式
+- 单个 @Component 文件严禁超过 300 行（含 import / 类型定义 / 样式常量）
+- 超过 300 行的组件必须拆分为子组件或提取 @Builder
+
+# -------------------- 数据库 --------------------
+- 数据库：仅限使用 @ohos.data.relationalStore（RdbStore）
+- 严禁使用 preferences / localStorage 替代关系型数据库存储业务数据
+- 表名 / 字段名：小写下划线命名（snake_case）
+- SQL 语句：使用参数化查询（? 占位符），严禁字符串拼接 SQL
+- 事务：级联删除等写操作必须使用 BEGIN / COMMIT 事务包裹
+- 外键：不使用 ON DELETE CASCADE，级联删除由代码事务控制
+- 首次启动：执行 database/init.sql 建表脚本
+
+# -------------------- 网络请求 --------------------
+- 网络模块：仅限使用 @ohos.net.http
+- 严禁引入 axios / fetch / request 等第三方 HTTP 库
+- HTTPS：所有 AI 服务请求必须使用 HTTPS 协议
+- SSE 流式：基于 @ohos.net.http 实现 SSE EventStream 解析
+- 超时：HTTP connectTimeout 15 秒，SSE readTimeout 60 秒，AI 并发锁超时 120 秒（遵循 AI_SERVICE_PROTOCOL.md）
+
+# -------------------- 架构分层 --------------------
+- 严格遵循以下分层架构，禁止跨层调用：
+  Pages → ViewModels → Services → RdbHelper / Models
+- Pages：仅负责 UI 渲染和用户交互事件分发，不含业务逻辑
+- ViewModels：负责业务流程编排，调用 Service 层，管理页面状态
+- Services：负责单一业务域的数据操作，调用 RdbHelper 或外部服务
+- RdbHelper：封装数据库 CRUD 通用方法，执行 SQL，返回 Model 对象
+- Models：纯数据接口定义（interface / enum），不含方法实现
+- 禁止 Pages 直接调用 Services，必须通过 ViewModel 中转
+- 禁止 Services 直接操作 @State，状态更新由 ViewModel 驱动
+
+# -------------------- 禁令清单 --------------------
+- 严禁引入任何前端 Web 生态库，包括但不限于：
+  axios, lodash, underscore, moment, dayjs, pdf.js, echarts, chart.js,
+  d3, three.js, rxjs, immer, zod, yup, uuid（使用 @ohos.util.generateRandomUUID）
+- 严禁使用 WebView 加载本地 HTML / 远程网页作为主要 UI
+- 严禁在业务代码中使用 console.log，统一使用 Logger 工具类
+- 严禁硬编码字符串常量，必须提取到 constants.ets 或资源文件
+- 严禁在组件 build() 方法中编写复杂计算逻辑，必须提前计算
+- 严禁在 @State 中存储大对象（>1MB），使用懒加载或分页
+
+# -------------------- 命名规范 --------------------
+- 文件名：PascalCase.ets（组件/页面/ViewModel/Service/Model）
+- 目录名：小写（pages / components / viewmodels / services / models / db / common）
+- 类/接口/枚举：PascalCase
+- 变量/函数：camelCase
+- 常量：UPPER_SNAKE_CASE
+- 数据库表/字段：lower_snake_case
+- 事件回调：on + PascalCase（如 onNodeActivated, onStepChanged）
+
+# -------------------- 文件组织 --------------------
+- 每个 @Component 独立一个 .ets 文件
+- 每个 Service 独立一个 .ets 文件
+- 每个 ViewModel 独立一个 .ets 文件
+- 全部 Model 接口集中在 models/Models.ets
+- 全局常量集中在 common/constants.ets
+- 配置项集中在 common/Config.ets
+
+# -------------------- 错误处理 --------------------
+- Service 层方法必须返回 Promise<T>，异常通过 try-catch 捕获
+- 禁止吞掉异常（空 catch 块），必须记录日志或向上抛出
+- AI 请求失败：记录 ai_request_log（status=failed），释放并发锁，提示用户重试
+- 数据库操作失败：事务回滚，记录错误日志，不中断应用
+
+# -------------------- 规范文档 --------------------
+- 编码前必须首先阅读 docs/00_CONVENTIONS_INDEX.md（规范索引与冲突解决规则）
+- 核心三文档（按优先级）：DATA_CONTRACT.md > AI_SERVICE_PROTOCOL.md > FEATURE_RULES.md
+- 架构约束：ARCHITECTURE_CONVENTIONS.md（分层、组件化、状态管理）
+- 其他规范：API_SECURITY / ERROR_LOG / ANALYTICS / PERFORMANCE / UI_ROUTING / I18N_AND_A11Y / RELEASE_AND_UPDATE
+- 文档冲突时，以 00_CONVENTIONS_INDEX.md 定义的优先级为准
+
+# -------------------- 性能约束 --------------------
+- 知识图谱力导向布局：200 次迭代计算完毕后，再一次性更新 @State
+- Canvas 渲染：底层 Canvas 画连线，上层叠加原生 @Component 画节点
+- 列表渲染：使用 LazyForEach 替代 ForEach（数据量 > 20 时）
+- 图片资源：使用资源引用（$r），禁止 base64 内嵌大图

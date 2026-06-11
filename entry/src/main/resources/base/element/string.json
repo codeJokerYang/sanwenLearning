@@ -1,0 +1,872 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "三问高效学习机"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "三问高效学习机 — 是什么·为什么·怎么用"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "三问学习"
+    },
+    {
+      "name": "manual_input_placeholder",
+      "value": "请输入你的答案..."
+    },
+    {
+      "name": "manual_input_accessibility",
+      "value": "手动输入区域"
+    },
+    {
+      "name": "manual_input_desc",
+      "value": "手动输入区域，仅支持手动键入"
+    },
+    {
+      "name": "radar_chart_accessibility",
+      "value": "能力雷达图，展示6个布鲁姆认知层级的得分"
+    },
+    {
+      "name": "puzzle_fragment_accessibility",
+      "value": "知识节点: %s, 已点亮"
+    },
+    {
+      "name": "puzzle_fragment_accessibility_tap",
+      "value": "知识节点: %s, 点击激活"
+    },
+    {
+      "name": "puzzle_lit_accessibility",
+      "value": "知识节点: %s, 已点亮"
+    },
+    {
+      "name": "mind_badge_title",
+      "value": "心智塑成"
+    },
+    {
+      "name": "mind_badge_subtitle",
+      "value": "恭喜完成三问学习"
+    },
+    {
+      "name": "mind_badge_accessibility",
+      "value": "心智塑成勋章"
+    },
+    {
+      "name": "three_ask_q1_label",
+      "value": "是什么"
+    },
+    {
+      "name": "three_ask_q2_label",
+      "value": "为什么"
+    },
+    {
+      "name": "three_ask_q3_label",
+      "value": "怎么用"
+    },
+    {
+      "name": "three_ask_accessibility",
+      "value": "三问学习进度指示器"
+    },
+    {
+      "name": "three_ask_q1",
+      "value": "是什么"
+    },
+    {
+      "name": "three_ask_q2",
+      "value": "为什么"
+    },
+    {
+      "name": "three_ask_q3",
+      "value": "怎么用"
+    },
+    {
+      "name": "step_completed",
+      "value": "已完成"
+    },
+    {
+      "name": "step_current",
+      "value": "当前步骤"
+    },
+    {
+      "name": "step_pending",
+      "value": "待完成"
+    },
+    {
+      "name": "delete_course",
+      "value": "删除课程"
+    },
+    {
+      "name": "progress_prefix",
+      "value": "进度: "
+    },
+    {
+      "name": "course_card_accessibility",
+      "value": "课程卡片，长按可删除"
+    },
+    {
+      "name": "status_draft",
+      "value": "草稿"
+    },
+    {
+      "name": "status_generating",
+      "value": "生成中"
+    },
+    {
+      "name": "status_q1",
+      "value": "是什么"
+    },
+    {
+      "name": "status_q2",
+      "value": "为什么"
+    },
+    {
+      "name": "status_q3",
+      "value": "怎么用"
+    },
+    {
+      "name": "status_completed",
+      "value": "已完成"
+    },
+    {
+      "name": "debate_view_a",
+      "value": "观点 A"
+    },
+    {
+      "name": "debate_view_b",
+      "value": "观点 B"
+    },
+    {
+      "name": "debate_insight_placeholder",
+      "value": "请输入你的见解..."
+    },
+    {
+      "name": "debate_submit",
+      "value": "提交观点"
+    },
+    {
+      "name": "debate_evidence_prefix",
+      "value": "证据: "
+    },
+    {
+      "name": "ai_message_prefix",
+      "value": "AI评价: "
+    },
+    {
+      "name": "ai_message_description",
+      "value": "AI评价消息气泡"
+    },
+    {
+      "name": "home_search_placeholder",
+      "value": "搜索课程..."
+    },
+    {
+      "name": "home_my_courses",
+      "value": "我的课程"
+    },
+    {
+      "name": "home_no_courses",
+      "value": "暂无课程，点击右下角按钮创建"
+    },
+    {
+      "name": "home_loading_courses",
+      "value": "加载中..."
+    },
+    {
+      "name": "home_create_course",
+      "value": "创建课程"
+    },
+    {
+      "name": "home_delete_confirm_title",
+      "value": "确认删除"
+    },
+    {
+      "name": "home_delete_confirm_message",
+      "value": "确定要删除此课程吗？所有关联的学习记录、图谱、测评数据将一起删除。此操作不可撤销。"
+    },
+    {
+      "name": "home_delete_confirm_cancel",
+      "value": "取消"
+    },
+    {
+      "name": "home_delete_confirm_ok",
+      "value": "删除"
+    },
+    {
+      "name": "home_new_course_title",
+      "value": "新建课程"
+    },
+    {
+      "name": "home_new_course_placeholder",
+      "value": "请输入课程标题..."
+    },
+    {
+      "name": "home_new_course_create",
+      "value": "创建"
+    },
+    {
+      "name": "home_new_course_cancel",
+      "value": "取消"
+    },
+    {
+      "name": "knowledge_graph_no_nodes",
+      "value": "暂无知识节点，请先上传学习资料"
+    },
+    {
+      "name": "knowledge_graph_degraded",
+      "value": "节点过多，已切换列表视图"
+    },
+    {
+      "name": "knowledge_graph_node_prefix",
+      "value": "知识节点: "
+    },
+    {
+      "name": "learning_space_title",
+      "value": "为什么 — 争议分析"
+    },
+    {
+      "name": "learning_space_no_controversies",
+      "value": "暂无争议点，请等待AI生成"
+    },
+    {
+      "name": "learning_space_skip_evaluation",
+      "value": "跳过评价"
+    },
+    {
+      "name": "assessment_title",
+      "value": "怎么用 — 能力测评"
+    },
+    {
+      "name": "assessment_no_questions",
+      "value": "暂无题目"
+    },
+    {
+      "name": "assessment_bloom_failed",
+      "value": "AI 生成题目质量不足，请重试"
+    },
+    {
+      "name": "assessment_retry",
+      "value": "重新生成"
+    },
+    {
+      "name": "assessment_complete",
+      "value": "已作答"
+    },
+    {
+      "name": "assessment_objective_label",
+      "value": "请选择一个选项："
+    },
+    {
+      "name": "assessment_subjective_label",
+      "value": "请输入你的回答："
+    },
+    {
+      "name": "assessment_bloom_remember",
+      "value": "记忆"
+    },
+    {
+      "name": "assessment_bloom_understand",
+      "value": "理解"
+    },
+    {
+      "name": "assessment_bloom_apply",
+      "value": "应用"
+    },
+    {
+      "name": "assessment_bloom_analyze",
+      "value": "分析"
+    },
+    {
+      "name": "assessment_bloom_evaluate",
+      "value": "评价"
+    },
+    {
+      "name": "assessment_bloom_create",
+      "value": "创造"
+    },
+    {
+      "name": "assessment_result_title",
+      "value": "学习报告"
+    },
+    {
+      "name": "assessment_result_loading",
+      "value": "正在生成报告..."
+    },
+    {
+      "name": "assessment_result_no_report",
+      "value": "暂无报告数据"
+    },
+    {
+      "name": "assessment_result_bloom_title",
+      "value": "布鲁姆能力雷达图"
+    },
+    {
+      "name": "assessment_result_score_breakdown",
+      "value": "三问得分明细"
+    },
+    {
+      "name": "assessment_result_q1_score",
+      "value": "第一问·是什么"
+    },
+    {
+      "name": "assessment_result_q2_score",
+      "value": "第二问·为什么"
+    },
+    {
+      "name": "assessment_result_q3_score",
+      "value": "第三问·怎么用"
+    },
+    {
+      "name": "assessment_result_total",
+      "value": "总分"
+    },
+    {
+      "name": "assessment_result_weak_nodes",
+      "value": "薄弱知识点"
+    },
+    {
+      "name": "assessment_result_integrity",
+      "value": "本报告所有答案均由学员手动输入"
+    },
+    {
+      "name": "assessment_result_suspect_warning",
+      "value": "⚠ 部分作答输入过快，可能存在非手动输入行为"
+    },
+    {
+      "name": "assessment_result_export",
+      "value": "导出报告"
+    },
+    {
+      "name": "err_unknown",
+      "value": "操作失败，请重试"
+    },
+    {
+      "name": "err_course_title_empty",
+      "value": "课程标题不可为空"
+    },
+    {
+      "name": "err_course_not_found",
+      "value": "课程不存在"
+    },
+    {
+      "name": "err_course_load_failed",
+      "value": "加载课程失败"
+    },
+    {
+      "name": "err_course_delete_failed",
+      "value": "删除课程失败"
+    },
+    {
+      "name": "err_course_create_failed",
+      "value": "创建课程失败"
+    },
+    {
+      "name": "err_knowledge_load_failed",
+      "value": "加载知识图谱失败"
+    },
+    {
+      "name": "err_node_activate_failed",
+      "value": "点亮节点失败"
+    },
+    {
+      "name": "err_learning_load_failed",
+      "value": "加载学习空间失败"
+    },
+    {
+      "name": "err_insight_submit_failed",
+      "value": "提交见解失败"
+    },
+    {
+      "name": "err_assessment_load_failed",
+      "value": "加载测评题目失败"
+    },
+    {
+      "name": "err_quiz_not_found",
+      "value": "题目不存在"
+    },
+    {
+      "name": "err_report_no_data",
+      "value": "生成报告失败：暂无作答数据"
+    },
+    {
+      "name": "err_report_no_export",
+      "value": "暂无报告可导出"
+    },
+    {
+      "name": "err_network_disconnected",
+      "value": "网络未连接，请检查网络设置"
+    },
+    {
+      "name": "err_ai_timeout",
+      "value": "AI服务响应超时，请检查网络后重试"
+    },
+    {
+      "name": "err_ai_failed",
+      "value": "AI服务暂时不可用，请稍后重试"
+    },
+    {
+      "name": "err_no_valid_material",
+      "value": "无有效学习资料，请上传 Markdown 文件"
+    },
+    {
+      "name": "bloom_remember",
+      "value": "记忆"
+    },
+    {
+      "name": "bloom_understand",
+      "value": "理解"
+    },
+    {
+      "name": "bloom_apply",
+      "value": "应用"
+    },
+    {
+      "name": "bloom_analyze",
+      "value": "分析"
+    },
+    {
+      "name": "bloom_evaluate",
+      "value": "评价"
+    },
+    {
+      "name": "bloom_create",
+      "value": "创造"
+    },
+    {
+      "name": "a11y_search_input",
+      "value": "搜索框，输入您想学习的领域问题"
+    },
+    {
+      "name": "a11y_delete_dialog",
+      "value": "确认删除课程"
+    },
+    {
+      "name": "a11y_create_dialog",
+      "value": "新建课程"
+    },
+    {
+      "name": "a11y_course_title_input",
+      "value": "课程标题输入框"
+    },
+    {
+      "name": "a11y_debate_submit",
+      "value": "提交见解"
+    },
+    {
+      "name": "a11y_debate_input",
+      "value": "见解输入框，手动输入您的见解"
+    },
+    {
+      "name": "a11y_manual_input_desc",
+      "value": "手动输入您的答案，禁止粘贴"
+    },
+    {
+      "name": "a11y_canvas_status",
+      "value": "知识图谱，共%d个节点，%d个已点亮"
+    },
+    {
+      "name": "home_empty_message",
+      "value": "还没有课程，输入问题开始学习吧"
+    },
+    {
+      "name": "home_empty_action",
+      "value": "去创建"
+    },
+    {
+      "name": "knowledge_degraded_many",
+      "value": "节点较多，已优化渲染模式"
+    },
+    {
+      "name": "knowledge_degraded_list",
+      "value": "节点过多，已切换列表视图"
+    },
+    {
+      "name": "profile_title",
+      "value": "我的"
+    },
+    {
+      "name": "profile_default_name",
+      "value": "三问智学员"
+    },
+    {
+      "name": "profile_default_bio",
+      "value": "用三问法，深度理解每一个知识"
+    },
+    {
+      "name": "profile_stats_courses",
+      "value": "课程数"
+    },
+    {
+      "name": "profile_stats_completed",
+      "value": "已完成"
+    },
+    {
+      "name": "profile_stats_days",
+      "value": "学习天数"
+    },
+    {
+      "name": "profile_stats_avg_score",
+      "value": "平均分"
+    },
+    {
+      "name": "profile_badge_title",
+      "value": "成就勋章"
+    },
+    {
+      "name": "profile_badge_beginner",
+      "value": "初学者"
+    },
+    {
+      "name": "profile_badge_beginner_desc",
+      "value": "创建第一个课程"
+    },
+    {
+      "name": "profile_badge_master",
+      "value": "三问达人"
+    },
+    {
+      "name": "profile_badge_master_desc",
+      "value": "完成三问全流程"
+    },
+    {
+      "name": "profile_badge_pioneer",
+      "value": "学习先锋"
+    },
+    {
+      "name": "profile_badge_pioneer_desc",
+      "value": "累计学习7天"
+    },
+    {
+      "name": "profile_setting_title",
+      "value": "设置"
+    },
+    {
+      "name": "profile_setting_theme",
+      "value": "主题皮肤"
+    },
+    {
+      "name": "profile_setting_theme_value",
+      "value": "宇宙蓝"
+    },
+    {
+      "name": "profile_setting_api",
+      "value": "API 配置"
+    },
+    {
+      "name": "profile_setting_api_configured",
+      "value": "已配置"
+    },
+    {
+      "name": "profile_setting_api_not_configured",
+      "value": "未配置"
+    },
+    {
+      "name": "profile_setting_about",
+      "value": "关于三问智学"
+    },
+    {
+      "name": "profile_setting_version",
+      "value": "v1.0.0"
+    },
+    {
+      "name": "profile_toast_developing",
+      "value": "功能开发中"
+    },
+    {
+      "name": "profile_about_title",
+      "value": "关于三问智学"
+    },
+    {
+      "name": "profile_about_content",
+      "value": "三问高效学习机 v1.0.0\n基于苏格拉底提问法与布鲁姆分类学\n© 2026 三问智学团队"
+    },
+    {
+      "name": "tab_home",
+      "value": "首页"
+    },
+    {
+      "name": "tab_learning",
+      "value": "学习"
+    },
+    {
+      "name": "tab_assessment",
+      "value": "测评"
+    },
+    {
+      "name": "tab_profile",
+      "value": "我的"
+    },
+    {
+      "name": "a11y_profile_avatar",
+      "value": "用户头像，点击编辑个人资料"
+    },
+    {
+      "name": "a11y_stats_course",
+      "value": "课程数统计"
+    },
+    {
+      "name": "a11y_stats_completed",
+      "value": "已完成课程统计"
+    },
+    {
+      "name": "a11y_stats_days",
+      "value": "学习天数统计"
+    },
+    {
+      "name": "a11y_stats_score",
+      "value": "平均分统计"
+    },
+    {
+      "name": "a11y_setting_theme",
+      "value": "主题皮肤设置"
+    },
+    {
+      "name": "a11y_setting_api",
+      "value": "API配置设置"
+    },
+    {
+      "name": "a11y_setting_about",
+      "value": "关于三问智学"
+    },
+    {
+      "name": "a11y_tab_home",
+      "value": "首页标签"
+    },
+    {
+      "name": "a11y_tab_learning",
+      "value": "学习标签"
+    },
+    {
+      "name": "a11y_tab_assessment",
+      "value": "测评标签"
+    },
+    {
+      "name": "a11y_tab_profile",
+      "value": "我的标签"
+    },
+    {
+      "name": "profile_badge_unlocked",
+      "value": "%s 已解锁"
+    },
+    {
+      "name": "profile_badge_locked",
+      "value": "%s 未解锁"
+    },
+    {
+      "name": "profile_setting_row_a11y",
+      "value": "%s，%s"
+    },
+    {
+      "name": "home_greeting_morning",
+      "value": "早上好"
+    },
+    {
+      "name": "home_greeting_noon",
+      "value": "午安"
+    },
+    {
+      "name": "home_greeting_afternoon",
+      "value": "下午好"
+    },
+    {
+      "name": "home_greeting_evening",
+      "value": "晚上好"
+    },
+    {
+      "name": "home_greeting_night",
+      "value": "夜深了，注意休息"
+    },
+    {
+      "name": "home_greeting_late_night",
+      "value": "夜深了，注意休息"
+    },
+    {
+      "name": "home_today_progress",
+      "value": "今日进度"
+    },
+    {
+      "name": "home_no_active_course",
+      "value": "暂无进行中的课程"
+    },
+    {
+      "name": "home_continue_learning",
+      "value": "继续学习"
+    },
+    {
+      "name": "home_start_explore",
+      "value": "开始探索"
+    },
+    {
+      "name": "home_create_first_course",
+      "value": "创建你的第一门课程"
+    },
+    {
+      "name": "home_step_q1",
+      "value": "是什么"
+    },
+    {
+      "name": "home_step_q2",
+      "value": "为什么"
+    },
+    {
+      "name": "home_step_q3",
+      "value": "怎么用"
+    },
+    {
+      "name": "home_daily_question",
+      "value": "每日一问"
+    },
+    {
+      "name": "home_daily_question_default",
+      "value": "如果知识是一棵树，它的根是什么？"
+    },
+    {
+      "name": "home_daily_question_source",
+      "value": "AI 推荐"
+    },
+    {
+      "name": "home_daily_question_easy",
+      "value": "简单"
+    },
+    {
+      "name": "home_daily_question_medium",
+      "value": "中等"
+    },
+    {
+      "name": "home_daily_question_hard",
+      "value": "困难"
+    },
+    {
+      "name": "home_start_thinking",
+      "value": "开始思考"
+    },
+    {
+      "name": "home_change_question",
+      "value": "换一题"
+    },
+    {
+      "name": "home_quick_new_course",
+      "value": "新建课程"
+    },
+    {
+      "name": "home_quick_upload",
+      "value": "上传资料"
+    },
+    {
+      "name": "home_quick_assess",
+      "value": "开始测评"
+    },
+    {
+      "name": "home_quick_report",
+      "value": "查看报告"
+    },
+    {
+      "name": "home_stats_minutes",
+      "value": "分钟"
+    },
+    {
+      "name": "home_stats_knowledge",
+      "value": "个知识点"
+    },
+    {
+      "name": "home_stats_streak",
+      "value": "天连续"
+    },
+    {
+      "name": "home_stats_study_time",
+      "value": "本周学习"
+    },
+    {
+      "name": "home_stats_knowledge_count",
+      "value": "累计知识"
+    },
+    {
+      "name": "home_stats_streak_days",
+      "value": "连续学习"
+    },
+    {
+      "name": "home_stats_empty_hint",
+      "value": "开始学习后这里会展示你的数据"
+    },
+    {
+      "name": "home_discover_title",
+      "value": "发现与推荐"
+    },
+    {
+      "name": "home_template_use",
+      "value": "使用模板"
+    },
+    {
+      "name": "home_template_quantum",
+      "value": "量子力学基础"
+    },
+    {
+      "name": "home_template_quantum_desc",
+      "value": "从波粒二象性到量子纠缠"
+    },
+    {
+      "name": "home_template_history",
+      "value": "中国古代史入门"
+    },
+    {
+      "name": "home_template_history_desc",
+      "value": "从先秦到明清的文明脉络"
+    },
+    {
+      "name": "home_template_python",
+      "value": "Python 编程入门"
+    },
+    {
+      "name": "home_template_python_desc",
+      "value": "从变量到面向对象"
+    },
+    {
+      "name": "home_path_title",
+      "value": "AI 推荐学习路径"
+    },
+    {
+      "name": "home_path_desc",
+      "value": "从零到精通的个性化路线"
+    },
+    {
+      "name": "home_path_start",
+      "value": "开启路径"
+    },
+    {
+      "name": "home_path_duration",
+      "value": "预计时长"
+    },
+    {
+      "name": "home_path_knowledge",
+      "value": "覆盖知识点"
+    },
+    {
+      "name": "a11y_home_greeting",
+      "value": "首页问候区域"
+    },
+    {
+      "name": "a11y_home_continue_learning",
+      "value": "继续学习按钮"
+    },
+    {
+      "name": "a11y_home_daily_question",
+      "value": "每日一问卡片"
+    },
+    {
+      "name": "a11y_home_quick_new_course",
+      "value": "新建课程快捷按钮"
+    },
+    {
+      "name": "a11y_home_quick_upload",
+      "value": "上传资料快捷按钮"
+    },
+    {
+      "name": "a11y_home_quick_assess",
+      "value": "开始测评快捷按钮"
+    },
+    {
+      "name": "a11y_home_quick_report",
+      "value": "查看报告快捷按钮"
+    }
+  ]
+}
