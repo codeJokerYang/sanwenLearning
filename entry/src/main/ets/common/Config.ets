@@ -10,7 +10,7 @@ export const APP_VERSION: string = '1.0.0'
 export const APP_VERSION_CODE: number = 10000
 
 /** 数据库 schema 版本号，每次 schema 变更递增 */
-export const DB_VERSION: number = 2
+export const DB_VERSION: number = 3
 
 /** 数据库文件名 */
 export const DB_NAME: string = 'sanwen_learning.db'
