@@ -12,6 +12,7 @@ import { DiscoverSection } from '../components/DiscoverSection';
 import { DynamicBackground } from '../components/DynamicBackground';
 import { BottomTabBar } from '../components/BottomTabBar';
 import { CreateCourseDialog } from '../components/CreateCourseDialog';
+import { AIService } from '../services/AIService';
 import { router } from '@kit.ArkUI';
 import { promptAction } from '@kit.ArkUI';
 
@@ -40,6 +41,33 @@ struct HomePage {
     const now = new Date();
     this.currentHour = now.getHours();
     this.loadDashboard();
+    this.promptApiKeySetupIfNeeded();
+  }
+
+  /**
+   * 首次启动引导：未配置 API Key 时弹窗引导用户前往设置页
+   * 应用不内置默认密钥，AI 功能（图谱/争议/测评/对话）依赖用户自行配置
+   */
+  private async promptApiKeySetupIfNeeded(): Promise<void> {
+    try {
+      const configured: boolean = await AIService.getInstance().isApiKeyConfigured();
+      if (configured) {
+        return;
+      }
+      const result: promptAction.ShowDialogSuccessResponse = await promptAction.showDialog({
+        title: '配置 AI 服务',
+        message: '尚未配置 API Key，知识图谱、争议分析、测评与对话等 AI 功能暂不可用。\n密钥将经 HUKS 加密存储在本机。',
+        buttons: [
+          { text: '稍后再说', color: '#999999' },
+          { text: '去配置', color: '#7C8CFF' }
+        ]
+      });
+      if (result.index === 1) {
+        router.pushUrl({ url: 'pages/SettingsPage' });
+      }
+    } catch (_e) {
+      // 弹窗失败不影响首页加载
+    }
   }
 
   private async loadDashboard(): Promise<void> {

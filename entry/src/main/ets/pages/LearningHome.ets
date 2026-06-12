@@ -83,7 +83,7 @@ struct LearningHome {
       this.courseList = [];
       const errCode = (e instanceof Error) ? e.message : '';
       if (errCode === ErrorCode.NETWORK_DISCONNECTED) {
-        AlertDialog.show({
+        this.getUIContext().showAlertDialog({
           message: errorCodeToResource(ErrorCode.NETWORK_DISCONNECTED),
           autoCancel: false,
           buttons: [{

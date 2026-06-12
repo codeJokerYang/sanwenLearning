@@ -405,6 +405,10 @@
       "value": "AI service temporarily unavailable, please try again later"
     },
     {
+      "name": "err_api_key_missing",
+      "value": "API Key not configured, please set it in Settings"
+    },
+    {
       "name": "err_no_valid_material",
       "value": "No valid learning materials, please upload a Markdown file"
     },
@@ -845,7 +849,7 @@
       "value": "New course quick action"
     },
     {
-      "name": "home_quick_upload_a11y",
+      "name": "a11y_home_quick_upload",
       "value": "Upload quick action"
     },
     {

@@ -219,6 +219,9 @@ export class RdbHelper {
       case 2:
         await this.migrateV2(store)
         break
+      case 3:
+        await this.migrateV3(store)
+        break
       default:
         Logger.getInstance().warn(TAG, `No migration for version ${targetVersion}`)
     }
@@ -251,6 +254,39 @@ export class RdbHelper {
     await store.executeSql('CREATE INDEX idx_aiconv_course ON ai_conversation(course_id)')
     await store.executeSql('CREATE INDEX idx_aimsg_conv ON ai_message(conversation_id)')
     await store.executeSql('CREATE INDEX idx_aimsg_time ON ai_message(created_at)')
+  }
+
+  /**
+   * [DB_MIGRATION] V2->V3: 补建 ai_conversation / ai_message
+   * 背景：这两张表曾只追加进 INIT_SQL 而未升级 DB_VERSION，导致存量 V2 库缺表
+   * （全新安装有表、老库永远缺表）。本迁移全部使用 IF NOT EXISTS，对两类库均幂等。
+   */
+  private async migrateV3(store: relationalStore.RdbStore): Promise<void> {
+    Logger.getInstance().info(TAG, '[DB_MIGRATION] V2->V3: Ensuring ai_conversation and ai_message tables exist')
+    await store.executeSql(`
+      CREATE TABLE IF NOT EXISTS ai_conversation (
+        id                    TEXT    PRIMARY KEY NOT NULL,
+        course_id             TEXT    NOT NULL,
+        title                 TEXT    NOT NULL DEFAULT '',
+        created_at            INTEGER NOT NULL,
+        updated_at            INTEGER NOT NULL,
+        FOREIGN KEY (course_id) REFERENCES course(id)
+      )
+    `)
+    await store.executeSql(`
+      CREATE TABLE IF NOT EXISTS ai_message (
+        id                    TEXT    PRIMARY KEY NOT NULL,
+        conversation_id       TEXT    NOT NULL,
+        role                  TEXT    NOT NULL,
+        content               TEXT    NOT NULL DEFAULT '',
+        intent_type           TEXT,
+        created_at            INTEGER NOT NULL,
+        FOREIGN KEY (conversation_id) REFERENCES ai_conversation(id) ON DELETE SET NULL
+      )
+    `)
+    await store.executeSql('CREATE INDEX IF NOT EXISTS idx_aiconv_course ON ai_conversation(course_id)')
+    await store.executeSql('CREATE INDEX IF NOT EXISTS idx_aimsg_conv ON ai_message(conversation_id)')
+    await store.executeSql('CREATE INDEX IF NOT EXISTS idx_aimsg_time ON ai_message(created_at)')
   }
 
   // ---- 通用 CRUD ----

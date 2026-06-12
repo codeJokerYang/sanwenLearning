@@ -162,7 +162,7 @@ struct ProfilePage {
               value: 'v1.0.0',
               showDivider: false,
               onRowClick: () => {
-                AlertDialog.show({
+                this.getUIContext().showAlertDialog({
                   title: '关于三问智学',
                   message: '三问高效学习机 v1.0.0\n基于苏格拉底提问法与布鲁姆分类学\n\u00A9 2026 三问智学团队',
                   autoCancel: true,

@@ -8,6 +8,7 @@ import { IntentType, classify } from '../services/AIIntentEngine'
 import { RdbHelper } from '../db/RdbHelper'
 import { relationalStore } from '@kit.ArkData'
 import { Logger } from '../common/Logger'
+import { WebContentFetcher, SearchResultItem } from '../services/WebContentFetcher'
 
 const TAG: string = 'ChatViewModel'
 const MAX_INPUT_LENGTH: number = 500
@@ -28,6 +29,12 @@ export interface ChatDisplayMessage {
 interface ValidationResult {
   valid: boolean
   hint: string
+}
+
+/** 联网检索结果列表（contentType = 'searchResults' 时的 contentData） */
+export interface SearchResultsData {
+  topic: string
+  items: SearchResultItem[]
 }
 
 function generateUUID(): string {
@@ -56,6 +63,12 @@ function appendItem<T>(list: T[], item: T): T[] {
   return result
 }
 
+/**
+ * @Observed 使实例成为可观察代理：messages/isStreaming/errorMessage 等
+ * 第一层属性的赋值会通知所有以 @State/@ObjectLink 绑定本单例的组件刷新。
+ * 本类始终以整体替换数组的方式更新 messages，正是为配合第一层观察语义。
+ */
+@Observed
 export class ChatViewModel {
   private static instance: ChatViewModel | null = null
 
@@ -186,21 +199,26 @@ export class ChatViewModel {
     this.errorMessage = ''
     this.canRetry = false
 
-    // 确保有会话
-    if (!this.currentConversationId) {
-      await this.createConversation(trimmed)
-    }
-
-    // 持久化用户消息
+    // 确保有会话并持久化用户消息。
+    // 持久化失败必须降级（仅丢失历史记录），不得阻断本次对话 —— 修复：
+    // 此段原在 try 块外，建表缺失时异常静默吞没，表现为发送后无任何反应。
     const userAiMsg: AiMessage = {
       id: userMsgId,
-      conversation_id: this.currentConversationId,
+      conversation_id: '',
       role: 'user',
       content: trimmed,
       intent_type: intentStr,
       created_at: Date.now()
     }
-    await this.rdb.insertMessage(userAiMsg)
+    try {
+      if (!this.currentConversationId) {
+        await this.createConversation(trimmed)
+      }
+      userAiMsg.conversation_id = this.currentConversationId
+      await this.rdb.insertMessage(userAiMsg)
+    } catch (persistErr) {
+      this.logger.error(TAG, `persist user message failed (degraded, chat continues): ${String(persistErr)}`)
+    }
     this.persistedMessages = appendItem(this.persistedMessages, userAiMsg)
 
     // 创建 AI 消息占位
@@ -227,7 +245,49 @@ export class ChatViewModel {
           }
         )
       } else if (this.currentMode === 'retrieve') {
-        // 知识检索模式 — 动态导入（避免解构赋值）
+        // 知识检索模式：先联网检索候选条目交给用户选择；不可用时降级为纯 AI 摘要
+        let webResults: SearchResultItem[] = []
+        let webSearchOk: boolean = false
+        try {
+          webResults = await WebContentFetcher.getInstance().search(trimmed)
+          webSearchOk = true
+        } catch (searchErr) {
+          this.logger.warn(TAG, `web search failed, fallback to AI summary: ${String(searchErr)}`)
+        }
+
+        if (webSearchOk && webResults.length > 0) {
+          // 渲染候选条目选择列表，等待用户点击后再生成摘要
+          aiContent = `已联网检索「${trimmed}」，找到 ${webResults.length} 个相关条目，点击查看知识摘要：`
+          this.messages = this.updateMessageContent(this.messages, aiMsgId, aiContent)
+          const resultsData: SearchResultsData = { topic: trimmed, items: webResults }
+          this.messages = this.updateMessageWithContent(
+            this.messages, aiMsgId, false, 'searchResults', resultsData)
+          this.isStreaming = false
+
+          const listMsg: AiMessage = {
+            id: aiMsgId,
+            conversation_id: this.currentConversationId,
+            role: 'assistant',
+            content: aiContent,
+            intent_type: intentStr,
+            created_at: Date.now()
+          }
+          try {
+            await this.rdb.insertMessage(listMsg)
+            await this.rdb.updateConversationTimestamp(this.currentConversationId, Date.now())
+          } catch (persistErr) {
+            this.logger.error(TAG, `persist search results failed (degraded): ${String(persistErr)}`)
+          }
+          this.persistedMessages = appendItem(this.persistedMessages, listMsg)
+          return
+        }
+
+        // 降级路径：联网失败或无结果 → 纯 AI 知识摘要
+        aiContent = webSearchOk
+          ? `未找到与「${trimmed}」相关的网络条目，已为你生成 AI 知识摘要：\n`
+          : '联网检索暂不可用，已切换为 AI 知识摘要：\n'
+        this.messages = this.updateMessageContent(this.messages, aiMsgId, aiContent)
+
         const KnowledgeRetrieverModule = await import('../services/KnowledgeRetriever')
         const KnowledgeRetriever = KnowledgeRetrieverModule.KnowledgeRetriever
         await KnowledgeRetriever.getInstance().getSummary(
@@ -275,7 +335,7 @@ export class ChatViewModel {
       }
       this.isStreaming = false
 
-      // 持久化 AI 消息
+      // 持久化 AI 消息（失败降级，不影响已渲染的对话）
       const aiAiMsg: AiMessage = {
         id: aiMsgId,
         conversation_id: this.currentConversationId,
@@ -284,27 +344,33 @@ export class ChatViewModel {
         intent_type: intentStr,
         created_at: Date.now()
       }
-      await this.rdb.insertMessage(aiAiMsg)
-      this.persistedMessages = appendItem(this.persistedMessages, aiAiMsg)
+      try {
+        await this.rdb.insertMessage(aiAiMsg)
 
-      // 持久化生成内容到 material 表（7.1-7.3）
-      if (receivedContentData) {
-        const typeMap2: Record<string, string> = {
-          'retrieve': 'knowledge', 'mindmap': 'mindmap',
-          'studydoc': 'studydoc', 'framework': 'framework'
+        // 持久化生成内容到 material 表（7.1-7.3）
+        if (receivedContentData) {
+          const typeMap2: Record<string, string> = {
+            'retrieve': 'knowledge', 'mindmap': 'mindmap',
+            'studydoc': 'studydoc', 'framework': 'framework'
+          }
+          const matType: string = typeMap2[this.currentMode] ?? 'knowledge'
+          await this.saveGeneratedMaterial(trimmed, matType, receivedContentData)
         }
-        const matType: string = typeMap2[this.currentMode] ?? 'knowledge'
-        await this.saveGeneratedMaterial(trimmed, matType, receivedContentData)
-      }
 
-      // 更新会话时间戳
-      await this.rdb.updateConversationTimestamp(this.currentConversationId, Date.now())
+        // 更新会话时间戳
+        await this.rdb.updateConversationTimestamp(this.currentConversationId, Date.now())
+      } catch (persistErr) {
+        this.logger.error(TAG, `persist ai message failed (degraded): ${String(persistErr)}`)
+      }
+      this.persistedMessages = appendItem(this.persistedMessages, aiAiMsg)
     } catch (e) {
       this.isStreaming = false
       const errMsg: string = String(e)
       this.messages = this.updateMessageError(this.messages, aiMsgId)
 
-      if (errMsg.includes('NETWORK_DISCONNECTED')) {
+      if (errMsg.includes('API_KEY_MISSING')) {
+        this.errorMessage = '尚未配置 API Key，请前往「设置」页填写后重试'
+      } else if (errMsg.includes('NETWORK_DISCONNECTED')) {
         this.errorMessage = '当前无网络连接，请检查网络后重试'
       } else if (errMsg.includes('AI_FAILED')) {
         this.errorMessage = 'AI 正在处理其他任务，请稍后再试'
@@ -314,6 +380,115 @@ export class ChatViewModel {
         this.errorMessage = '请求失败，请稍后重试'
       }
       this.canRetry = true
+    }
+  }
+
+  /**
+   * 用户从联网检索结果中选择条目：
+   * 抓取该条目正文摘录作为参考资料 → AI 生成有据知识摘要 → 存入 material 表
+   */
+  async selectSearchResult(topic: string, title: string): Promise<void> {
+    if (this.isStreaming) {
+      return
+    }
+    this.logger.info(TAG, `selectSearchResult: topic="${topic}", title="${title}"`)
+
+    const userMsgId: string = generateUUID()
+    const userText: string = `查看「${title}」的知识摘要`
+    this.messages = appendItem(this.messages,
+      createDisplayMessage(userMsgId, 'user', userText, null, false, false))
+    this.errorMessage = ''
+    this.canRetry = false
+
+    // 持久化失败降级，不阻断检索流程
+    const userAiMsg: AiMessage = {
+      id: userMsgId,
+      conversation_id: '',
+      role: 'user',
+      content: userText,
+      intent_type: null,
+      created_at: Date.now()
+    }
+    try {
+      if (!this.currentConversationId) {
+        await this.createConversation(userText)
+      }
+      userAiMsg.conversation_id = this.currentConversationId
+      await this.rdb.insertMessage(userAiMsg)
+    } catch (persistErr) {
+      this.logger.error(TAG, `persist select message failed (degraded): ${String(persistErr)}`)
+    }
+    this.persistedMessages = appendItem(this.persistedMessages, userAiMsg)
+
+    const aiMsgId: string = generateUUID()
+    this.messages = appendItem(this.messages,
+      createDisplayMessage(aiMsgId, 'assistant', '', null, true, false))
+    this.isStreaming = true
+
+    try {
+      // 抓取正文摘录作为 grounding（失败不阻断，仅退化为无依据生成）
+      let extract: string = ''
+      try {
+        extract = await WebContentFetcher.getInstance().fetchExtract(title)
+      } catch (fetchErr) {
+        this.logger.warn(TAG, `fetchExtract failed: ${String(fetchErr)}`)
+      }
+
+      let aiContent: string = ''
+      let receivedContentData: object | null = null
+      const KnowledgeRetrieverModule = await import('../services/KnowledgeRetriever')
+      await KnowledgeRetrieverModule.KnowledgeRetriever.getInstance().getSummary(
+        title,
+        (chunk: string): void => {
+          aiContent += chunk
+          this.messages = this.updateMessageContent(this.messages, aiMsgId, aiContent)
+        },
+        (data: object): void => {
+          receivedContentData = data
+        },
+        extract.length > 0 ? extract : undefined
+      )
+
+      if (receivedContentData) {
+        this.messages = this.updateMessageWithContent(
+          this.messages, aiMsgId, false, 'knowledge', receivedContentData)
+      } else {
+        this.messages = this.updateMessageStreaming(this.messages, aiMsgId, false)
+      }
+      this.isStreaming = false
+
+      const aiAiMsg: AiMessage = {
+        id: aiMsgId,
+        conversation_id: this.currentConversationId,
+        role: 'assistant',
+        content: aiContent,
+        intent_type: null,
+        created_at: Date.now()
+      }
+      try {
+        await this.rdb.insertMessage(aiAiMsg)
+        if (receivedContentData) {
+          await this.saveGeneratedMaterial(title, 'knowledge', receivedContentData)
+        }
+        await this.rdb.updateConversationTimestamp(this.currentConversationId, Date.now())
+      } catch (persistErr) {
+        this.logger.error(TAG, `persist summary failed (degraded): ${String(persistErr)}`)
+      }
+      this.persistedMessages = appendItem(this.persistedMessages, aiAiMsg)
+    } catch (e) {
+      this.isStreaming = false
+      const errMsg: string = String(e)
+      this.messages = this.updateMessageError(this.messages, aiMsgId)
+      if (errMsg.includes('API_KEY_MISSING')) {
+        this.errorMessage = '尚未配置 API Key，请前往「设置」页填写后重试'
+      } else if (errMsg.includes('NETWORK_DISCONNECTED')) {
+        this.errorMessage = '当前无网络连接，请检查网络后重试'
+      } else if (errMsg.includes('AI_TIMEOUT')) {
+        this.errorMessage = 'AI 响应超时，请稍后重试'
+      } else {
+        this.errorMessage = '检索失败，请稍后重试'
+      }
+      this.canRetry = false
     }
   }
 

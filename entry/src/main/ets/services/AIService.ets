@@ -73,8 +73,10 @@ export class AIService {
   }
 
   /**
-   * 确保 API Key 已安全存储至 HUKS 加密存储
-   * 首次启动时自动加密写入默认 Key，无需用户手动配置
+   * 检查 API Key 是否已安全存储至 HUKS 加密存储
+   * 应用不内置默认 Key（DEFAULT_API_KEY 保持空字符串，严禁提交真实密钥）；
+   * 未配置时由首页弹窗引导用户前往设置页手动填写。
+   * DEFAULT_API_KEY 仅作为本地调试便利保留：开发者本地填入后首启自动加密写入，但不得提交。
    * 密钥明文仅在此函数作用域内短暂存在，绝不赋值给 @State 或全局变量
    */
   private async ensureApiKeyStored(context: common.Context): Promise<void> {
@@ -83,7 +85,6 @@ export class AIService {
       await ApiKeyStore.loadApiKey(context, API_KEY_ALIAS)
       this.logger.info(TAG, 'API Key 已存在，无需重新存储')
     } catch (_e) {
-      // Key 尚未存储，自动加密写入默认 Key
       const defaultKey: string = AI_ENDPOINT_CONFIG.DEFAULT_API_KEY
       if (defaultKey && defaultKey.length > 0) {
         try {
@@ -93,8 +94,24 @@ export class AIService {
           this.logger.error(TAG, 'API Key 自动存储失败', String(saveErr))
         }
       } else {
-        this.logger.info(TAG, 'API Key 未存储，等待用户通过设置页配置')
+        this.logger.info(TAG, 'API Key 未配置，等待用户通过设置页配置')
       }
+    }
+  }
+
+  /**
+   * 查询 API Key 是否已配置（供 UI 引导判断）
+   * 仅返回布尔状态，不向调用方暴露密钥明文
+   */
+  async isApiKeyConfigured(): Promise<boolean> {
+    if (!this.context) {
+      return false
+    }
+    try {
+      const key: string = await ApiKeyStore.loadApiKey(this.context, API_KEY_ALIAS)
+      return key.length > 0
+    } catch (_e) {
+      return false
     }
   }
 
@@ -227,7 +244,7 @@ export class AIService {
         apiKey = await ApiKeyStore.loadApiKey(this.context!, API_KEY_ALIAS)
       } catch (e) {
         lock.releaseLock(courseId)
-        reject(new Error(ErrorCode.AI_FAILED))
+        reject(new Error(ErrorCode.API_KEY_MISSING))
         return
       }
 
@@ -457,7 +474,7 @@ export class AIService {
         apiKey = await ApiKeyStore.loadApiKey(this.context!, API_KEY_ALIAS)
       } catch (e) {
         lock.releaseLock(courseId)
-        reject(new Error(ErrorCode.AI_FAILED))
+        reject(new Error(ErrorCode.API_KEY_MISSING))
         return
       }
 
@@ -739,7 +756,7 @@ export class AIService {
       try {
         apiKey = await ApiKeyStore.loadApiKey(this.context!, API_KEY_ALIAS)
       } catch (e) {
-        lock.releaseLock(courseId); reject(new Error(ErrorCode.AI_FAILED)); return
+        lock.releaseLock(courseId); reject(new Error(ErrorCode.API_KEY_MISSING)); return
       }
 
       const callbacks: SSEStreamCallbacks = {
@@ -821,7 +838,8 @@ export class AIService {
    */
   async generateContent(requestType: string, topic: string,
     onTextChunk: (text: string) => void,
-    onJsonData: (data: object) => void): Promise<void> {
+    onJsonData: (data: object) => void,
+    groundingContext?: string): Promise<void> {
     const typePrompts: Record<string, string> = {
       'knowledge_summary':
         `请为"${topic}"生成结构化知识摘要。严格输出JSON：` +
@@ -845,11 +863,17 @@ export class AIService {
       return
     }
 
-    const fullPrompt: string = basePrompt +
+    let fullPrompt: string = basePrompt +
       '\n\n【系统约束】\n' +
       '1. 禁止编造内容，不确定的信息标注"[需核实]"\n' +
       '2. JSON 必须完整一次性输出，禁止分片\n' +
       '3. 所有字段必须符合上述 schema'
+
+    // 联网检索到的参考资料注入（防幻觉：生成内容必须以资料为依据）
+    if (groundingContext && groundingContext.length > 0) {
+      fullPrompt = '【参考资料（来自联网检索，生成内容必须以此为依据，禁止编造资料外的事实）】\n' +
+        groundingContext + '\n\n' + fullPrompt
+    }
 
     // 复用 sendAIRequest 基础设施（不需要 courseId 的全局锁，使用特殊标识）
     await this.sendAIRequest('__global__', fullPrompt, requestType === 'knowledge_summary' ? 'knowledge_retrieval' : `content_gen_${requestType}`)

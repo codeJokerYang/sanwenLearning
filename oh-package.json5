@@ -1,6 +1,6 @@
 {
   "modelVersion": "6.0.2",
-  "description": "Please describe the basic information.",
+  "description": "三问高效学习机 — 基于 HarmonyOS NEXT 的三问认知引擎智能学习应用",
   "dependencies": {
   },
   "devDependencies": {

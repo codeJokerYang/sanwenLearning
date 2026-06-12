@@ -3,7 +3,8 @@
  * 半屏浮层，包含消息列表 + 输入栏 + 工具栏
  * 使用 ChatViewModel 单例，跨页面共享对话状态
  */
-import { ChatViewModel, ChatDisplayMessage } from '../viewmodels/ChatViewModel'
+import { ChatViewModel, ChatDisplayMessage, SearchResultsData } from '../viewmodels/ChatViewModel'
+import { SearchResultItem } from '../services/WebContentFetcher'
 import { AIActionBar } from './AIActionBar'
 import { ContentPreviewCard } from './ContentPreviewCard'
 import { Logger } from '../common/Logger'
@@ -13,7 +14,11 @@ import { picker } from '@kit.CoreFileKit'
 @Component
 export struct AIChatPanel {
   @Link isOpen: boolean
-  private viewModel: ChatViewModel = ChatViewModel.getInstance()
+  /**
+   * 以 @State 绑定 @Observed 单例：VM 内部对 messages/isStreaming 等
+   * 第一层属性的赋值经代理通知本组件刷新（修复发送后 UI 不更新的缺陷）
+   */
+  @State viewModel: ChatViewModel = ChatViewModel.getInstance()
   private scroller: Scroller = new Scroller()
   private logger: Logger = Logger.getInstance()
   private static readonly TAG: string = 'AIChatPanel'
@@ -23,14 +28,15 @@ export struct AIChatPanel {
    * 修复：原 onClick 直接调用 viewModel.sendMessage 无 try-catch 保护
    */
   private safeSend(): void {
-    try {
-      this.logger.info(AIChatPanel.TAG, 'User clicked send button')
-      this.viewModel.sendMessage(this.viewModel.inputText)
-    } catch (e) {
+    this.logger.info(AIChatPanel.TAG, 'User clicked send button')
+    // 注意：sendMessage 是 async，同步 try-catch 接不住其内部异常，
+    // 必须用 Promise.catch 兜底，否则失败将静默无反馈
+    this.viewModel.sendMessage(this.viewModel.inputText).catch((e: Error) => {
       this.logger.error(AIChatPanel.TAG, `safeSend error: ${String(e)}`)
+      this.viewModel.isStreaming = false
       this.viewModel.errorMessage = '发送失败，请重试'
       this.viewModel.canRetry = true
-    }
+    })
   }
 
   /**
@@ -238,8 +244,13 @@ export struct AIChatPanel {
               .fontColor('#7C8CFF')
           }
 
+          // 联网检索结果选择列表
+          if (msg.contentType === 'searchResults' && msg.contentData) {
+            this.SearchResultsList(msg.contentData as SearchResultsData)
+          }
+
           // 结构化内容预览卡片
-          if (msg.contentType && msg.contentData) {
+          if (msg.contentType && msg.contentType !== 'searchResults' && msg.contentData) {
             Blank().height(8)
             ContentPreviewCard({
               contentType: msg.contentType,
@@ -285,6 +296,44 @@ export struct AIChatPanel {
       .justifyContent(FlexAlign.Center)
       .padding({ top: 8, bottom: 8 })
     }
+  }
+
+  @Builder
+  SearchResultsList(data: SearchResultsData) {
+    Column() {
+      ForEach(data.items, (item: SearchResultItem) => {
+        Column() {
+          Text(item.title)
+            .fontSize(14)
+            .fontColor('#9FA8FF')
+            .fontWeight(FontWeight.Medium)
+          if (item.snippet.length > 0) {
+            Text(item.snippet)
+              .fontSize(12)
+              .fontColor('rgba(255,255,255,0.45)')
+              .maxLines(2)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+              .margin({ top: 2 })
+          }
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Start)
+        .padding(10)
+        .borderRadius(10)
+        .backgroundColor('rgba(124,140,255,0.08)')
+        .border({ width: 0.5, color: 'rgba(124,140,255,0.18)' })
+        .margin({ top: 6 })
+        .onClick(() => {
+          this.viewModel.selectSearchResult(data.topic, item.title).catch((e: Error) => {
+            this.logger.error(AIChatPanel.TAG, `selectSearchResult error: ${String(e)}`)
+            this.viewModel.isStreaming = false
+            this.viewModel.errorMessage = '检索失败，请稍后重试'
+          })
+        })
+      }, (item: SearchResultItem) => item.title)
+    }
+    .width('100%')
+    .margin({ top: 8 })
   }
 
   @Builder
@@ -339,7 +388,7 @@ export struct AIChatPanel {
           this.pickAndAttachFile()
         })
 
-        TextInput({ placeholder: this.getInputPlaceholder() })
+        TextInput({ placeholder: this.getInputPlaceholder(), text: this.viewModel.inputText })
           .layoutWeight(1)
           .fontSize(14)
           .fontColor(Color.White)
