@@ -52,7 +52,8 @@ export class Logger {
     try {
       const fileName = `log_${this.getDateStr(Date.now())}.md`
       const filePath = this.logDir + '/' + fileName
-      const fd = fs.openSync(filePath, fs.OpenMode.CREATE | fs.OpenMode.APPEND)
+      // 必须带 WRITE_ONLY：缺省是 READ_ONLY，CREATE|APPEND 只会建出 0 字节文件且写入失败
+      const fd = fs.openSync(filePath, fs.OpenMode.CREATE | fs.OpenMode.APPEND | fs.OpenMode.WRITE_ONLY)
       fs.writeSync(fd.fd, line)
       fs.closeSync(fd)
     } catch (_e) {

@@ -51,18 +51,47 @@ function base64ToUint8(b64: string): Uint8Array {
   return helper.decodeSync(b64)
 }
 
-async function ensureKeyExists(keyAlias: string): Promise<void> {
+function concatUint8(a: Uint8Array, b: Uint8Array): Uint8Array {
+  const result: Uint8Array = new Uint8Array(a.length + b.length)
+  result.set(a, 0)
+  result.set(b, a.length)
+  return result
+}
+
+/** 提取 HUKS/系统错误的 code 与 message（直接 String() 会得到 [object Object]） */
+function describeError(e: object): string {
   try {
-    const emptyOptions: huks.HuksOptions = { properties: [], inData: new Uint8Array([]) }
-    const exists: boolean = await huks.isKeyItemExist(keyAlias, emptyOptions)
-    if (exists) {
-      return
+    const rec: Record<string, Object> = e as Record<string, Object>
+    const code: Object = rec['code'] ?? ''
+    const msg: Object = rec['message'] ?? ''
+    if (code !== '' || msg !== '') {
+      return `code=${code} message=${msg}`
     }
+    return JSON.stringify(e)
+  } catch (_ignored) {
+    return String(e)
+  }
+}
+
+async function ensureKeyExists(keyAlias: string): Promise<void> {
+  const emptyOptions: huks.HuksOptions = { properties: [], inData: new Uint8Array([]) }
+  let exists: boolean = false
+  try {
+    exists = await huks.isKeyItemExist(keyAlias, emptyOptions)
+  } catch (_notExist) {
+    // API 11+ 行为：密钥不存在时 isKeyItemExist 以异常（12000011）返回而非 resolve(false)
+    exists = false
+  }
+  if (exists) {
+    return
+  }
+  try {
     await huks.generateKeyItem(keyAlias, KEY_GEN_PROPERTIES)
     Logger.getInstance().info('[SECURITY]', `HUKS 密钥已生成: ${keyAlias}`)
   } catch (e) {
-    Logger.getInstance().error('[SECURITY]', `HUKS ensureKeyExists failed: ${keyAlias}`, String(e))
-    throw new Error(`HUKS ensureKeyExists failed: ${String(e)}`)
+    const detail: string = describeError(e as object)
+    Logger.getInstance().error('[SECURITY]', `HUKS generateKeyItem failed: ${keyAlias}`, detail)
+    throw new Error(`HUKS generateKeyItem failed: ${detail}`)
   }
 }
 
@@ -100,11 +129,14 @@ async function hmacEncrypt(keyAlias: string, plaintext: string): Promise<HmacRes
   const handle: number = initResult.handle
 
   const plainData: Uint8Array = strToUint8(plaintext)
+  // 分段密码学操作：updateSession 与 finishSession 的 outData 都可能携带密文，
+  // 必须拼接两段输出。只取 finish 的输出会得到残缺密文，解密必然失败。
   const updateOptions: huks.HuksOptions = { properties: [], inData: plainData }
+  let updateResult: huks.HuksReturnResult
   try {
-    await huks.updateSession(handle, updateOptions)
+    updateResult = await huks.updateSession(handle, updateOptions)
   } catch (e) {
-    throw new Error(`HUKS updateSession failed: ${String(e)}`)
+    throw new Error(`HUKS updateSession failed: ${describeError(e as object)}`)
   }
 
   const finishOptions: huks.HuksOptions = { properties: [], inData: new Uint8Array([]) }
@@ -112,9 +144,11 @@ async function hmacEncrypt(keyAlias: string, plaintext: string): Promise<HmacRes
   try {
     finishResult = await huks.finishSession(handle, finishOptions)
   } catch (e) {
-    throw new Error(`HUKS finishSession failed: ${String(e)}`)
+    throw new Error(`HUKS finishSession failed: ${describeError(e as object)}`)
   }
-  const cipherData: Uint8Array = finishResult.outData ?? new Uint8Array([])
+  const cipherData: Uint8Array = concatUint8(
+    updateResult.outData ?? new Uint8Array([]),
+    finishResult.outData ?? new Uint8Array([]))
 
   const result: HmacResult = { iv: uint8ToBase64(iv), cipher: uint8ToBase64(cipherData) }
   return result
@@ -136,8 +170,9 @@ export class ApiKeyStore {
       await prefs.flush()
       Logger.getInstance().info(ApiKeyStore.TAG, `API Key 已加密存储: alias=${alias}`)
     } catch (e) {
-      Logger.getInstance().error(ApiKeyStore.TAG, `saveApiKey failed: alias=${alias}`, String(e))
-      throw new Error(`saveApiKey failed: ${String(e)}`)
+      const detail: string = describeError(e as object)
+      Logger.getInstance().error(ApiKeyStore.TAG, `saveApiKey failed: alias=${alias}`, detail)
+      throw new Error(`saveApiKey failed: ${detail}`)
     }
   }
 
@@ -170,19 +205,23 @@ export class ApiKeyStore {
       const initResult: huks.HuksSessionHandle = await huks.initSession(keyAlias, decryptProps)
       const handle: number = initResult.handle
 
+      // 与加密侧对称：update 与 finish 的 outData 拼接才是完整明文
       const cipherData: Uint8Array = base64ToUint8(cipherB64)
       const updateOptions: huks.HuksOptions = { properties: [], inData: cipherData }
-      await huks.updateSession(handle, updateOptions)
+      const updateResult: huks.HuksReturnResult = await huks.updateSession(handle, updateOptions)
 
       const finishOptions: huks.HuksOptions = { properties: [], inData: new Uint8Array([]) }
       const finishResult: huks.HuksReturnResult = await huks.finishSession(handle, finishOptions)
-      const plainData: Uint8Array = finishResult.outData ?? new Uint8Array([])
+      const plainData: Uint8Array = concatUint8(
+        updateResult.outData ?? new Uint8Array([]),
+        finishResult.outData ?? new Uint8Array([]))
 
       Logger.getInstance().info(ApiKeyStore.TAG, `API Key 已解密加载: alias=${alias}`)
       return uint8ToStr(plainData)
     } catch (e) {
-      Logger.getInstance().error(ApiKeyStore.TAG, `loadApiKey failed: alias=${alias}`, String(e))
-      throw new Error(`loadApiKey failed: ${String(e)}`)
+      const detail: string = describeError(e as object)
+      Logger.getInstance().error(ApiKeyStore.TAG, `loadApiKey failed: alias=${alias}`, detail)
+      throw new Error(`loadApiKey failed: ${detail}`)
     }
   }
 }
