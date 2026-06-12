@@ -838,7 +838,8 @@ export class AIService {
    */
   async generateContent(requestType: string, topic: string,
     onTextChunk: (text: string) => void,
-    onJsonData: (data: object) => void): Promise<void> {
+    onJsonData: (data: object) => void,
+    groundingContext?: string): Promise<void> {
     const typePrompts: Record<string, string> = {
       'knowledge_summary':
         `请为"${topic}"生成结构化知识摘要。严格输出JSON：` +
@@ -862,11 +863,17 @@ export class AIService {
       return
     }
 
-    const fullPrompt: string = basePrompt +
+    let fullPrompt: string = basePrompt +
       '\n\n【系统约束】\n' +
       '1. 禁止编造内容，不确定的信息标注"[需核实]"\n' +
       '2. JSON 必须完整一次性输出，禁止分片\n' +
       '3. 所有字段必须符合上述 schema'
+
+    // 联网检索到的参考资料注入（防幻觉：生成内容必须以资料为依据）
+    if (groundingContext && groundingContext.length > 0) {
+      fullPrompt = '【参考资料（来自联网检索，生成内容必须以此为依据，禁止编造资料外的事实）】\n' +
+        groundingContext + '\n\n' + fullPrompt
+    }
 
     // 复用 sendAIRequest 基础设施（不需要 courseId 的全局锁，使用特殊标识）
     await this.sendAIRequest('__global__', fullPrompt, requestType === 'knowledge_summary' ? 'knowledge_retrieval' : `content_gen_${requestType}`)

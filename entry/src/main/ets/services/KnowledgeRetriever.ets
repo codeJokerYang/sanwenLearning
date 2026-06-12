@@ -56,15 +56,17 @@ export class KnowledgeRetriever {
    * @param topic 学习主题
    * @param onTextChunk 流式文本回调
    * @param onJsonData 结构化数据回调
+   * @param groundingContext 联网检索到的参考资料（可选，注入后 AI 基于资料生成，防幻觉）
    */
   async getSummary(topic: string, onTextChunk: (text: string) => void,
-    onJsonData: (data: object) => void): Promise<KnowledgeSummary | null> {
+    onJsonData: (data: object) => void, groundingContext?: string): Promise<KnowledgeSummary | null> {
     if (!topic || topic.trim().length === 0) {
       onTextChunk('请输入要检索的学习主题')
       return null
     }
 
-    const key: string = this.hashTopic(topic.trim())
+    // 有参考资料时使用独立缓存键，避免与纯 AI 生成的摘要混淆
+    const key: string = this.hashTopic(topic.trim() + (groundingContext ? '#grounded' : ''))
     
     // 检查缓存
     const cached: CacheEntry | undefined = this.cache.get(key)
@@ -90,9 +92,10 @@ export class KnowledgeRetriever {
             this.cache.set(key, { data: parsed, timestamp: Date.now() })
           }
           if (onJsonData) { onJsonData(data) }
-        }
+        },
+        groundingContext
       )
-      
+
       return receivedData
     } catch (e) {
       onTextChunk(`检索失败：${String(e)}`)
